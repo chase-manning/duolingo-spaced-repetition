@@ -22,6 +22,9 @@ const init = () => {
   img.src = "https://i.imgur.com/vKVcjYZ.png";
   img.style.height = "62%";
   button.appendChild(img);
+  button.addEventListener("click", () => {
+    startSr();
+  });
   var element = document.querySelector("[title='Practice']");
   var parent = element.parentElement;
   parent.style.display = "flex";
