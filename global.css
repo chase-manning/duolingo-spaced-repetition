@@ -1,0 +1,57 @@
+.dsr_button {
+  -webkit-text-size-adjust: 100%;
+  text-align: initial;
+  --onetrust-banner-height: 0px;
+  pointer-events: auto;
+  box-sizing: inherit;
+  -webkit-tap-highlight-color: transparent;
+  display: inline-flex;
+  outline: none;
+  position: relative;
+  touch-action: manipulation;
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
+  align-items: center;
+  font: 700 var(--web-ui_button-font-size, 15px) /
+      var(--web-ui_button-line-height, 1.2) din-round,
+    sans-serif;
+  justify-content: center;
+  letter-spacing: 0.8px;
+  text-decoration: none;
+  text-transform: uppercase;
+  user-select: none;
+  white-space: nowrap;
+  --__internal__border-color: var(--web-ui_button-border-color, #e5e5e5);
+  background: none;
+  border: solid transparent;
+  border-radius: var(--web-ui_button-border-radius, 12px);
+  border-width: 2px 2px 4px;
+  color: var(--web-ui_button-color, #afafaf);
+  padding: var(--web-ui_button-padding, 0 16px);
+  transition: filter 0.2s;
+  --web-ui_button-border-radius: 50%;
+  --web-ui_button-height: 58px;
+  --web-ui_button-padding: 0;
+  height: 72px !important;
+  width: 72px !important;
+  cursor: pointer;
+  margin-left: 7px;
+}
+
+.dsr_button::before {
+  background-color: var(--web-ui_button-background-color, #fff);
+  border: 2px solid var(--__internal__border-color);
+  border-radius: var(--web-ui_button-border-radius, 12px);
+  bottom: -2px;
+  box-shadow: 0 2px 0 var(--__internal__border-color);
+  content: "";
+  left: -2px;
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  z-index: -1;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: inherit;
+  font-family: din-round, sans-serif;
+  outline: none;
+}
