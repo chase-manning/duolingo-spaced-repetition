@@ -3,9 +3,6 @@
   "description": "Build an Extension!",
   "version": "1.0",
   "manifest_version": 3,
-  "background": {
-    "service_worker": "background.js"
-  },
   "permissions": ["storage", "activeTab", "scripting"],
   "action": {
     "default_icon": {
@@ -25,7 +22,7 @@
     {
       "matches": ["https://www.duolingo.com/*"],
       "css": ["global.css"],
-      "js": ["global.js"]
+      "js": ["global.js", "background.js"]
     }
   ]
 }
