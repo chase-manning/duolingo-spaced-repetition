@@ -1,7 +1,3 @@
-// TODO Add auto cycle end when exiting lesson
-// TODO Add option to end cycle
-// ---- READY TO USE ----
-// TODO Add support for final challenges
 // TODO Add better description
 // TODO Add promotional banners
 // TODO Add better screenshots
@@ -12,10 +8,18 @@
 // TODO Add click event to icon
 // TODO Add options
 
-const getProbability = (lesson, index, finalLevelCount) => {
+const DELTA = 0.8; // Used to adjust the steepness of the curve (higher = more steep)
+const LEGENDARY_STEP = 9; // Used to adjust the steepness of the decay in legendary probability (higher = less legendaries)
+const UNFINISHED_MULTIPLIER = 1.5; // Used to increase the probablity of a non-legendary being selected (1.5 = 50% more likely)
+const UNLOCK_MULTIPLIER = 2; // Used to increase the probability of a skill that unlocks more skills (2 = 100% more likely)
+
+const getProbability = (lesson, index, finalLevels, lessonCount) => {
   let studied = lesson.finishedLevels * 6 + lesson.finishedLessons + 1;
-  if (lesson.hasFinalLevel) studied += (finalLevelCount - index) * 9;
-  return 1 / Math.pow(studied, 0.8);
+  if (lesson.hasFinalLevel) studied += (finalLevels - index) * LEGENDARY_STEP;
+  const baseProbability = 1 / Math.pow(studied, DELTA);
+  if (index === lessonCount - 1) return baseProbability * UNLOCK_MULTIPLIER;
+  if (!lesson.hasFinalLevel) return baseProbability * UNFINISHED_MULTIPLIER;
+  return baseProbability;
 };
 
 const selectLesson = (lessons) => {
@@ -24,13 +28,18 @@ const selectLesson = (lessons) => {
   ).length;
   let probabilitySum = 0;
   lessons.forEach((lesson, index) => {
-    probabilitySum += getProbability(lesson, index, finalLevelCount);
+    probabilitySum += getProbability(
+      lesson,
+      index,
+      finalLevelCount,
+      lessons.length
+    );
   });
   const selection = Math.random() * probabilitySum;
   let probability = 0;
   for (let i = 0; i < lessons.length; i++) {
     const lesson = lessons[i];
-    probability += getProbability(lesson, i, finalLevelCount);
+    probability += getProbability(lesson, i, finalLevelCount, lessons.length);
     if (selection < probability) return lesson;
   }
 };
