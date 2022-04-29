@@ -1,13 +1,16 @@
-// TODO Update button icon to pull from images
-// TODO Add support for doing errors
-// TODO Change selection based on errors
-// TODO Deploy to Chrome
-// TODO Add options
-// TODO Add click event to icon
+// TODO Add auto cycle end when exiting lesson
+// TODO Add option to end cycle
+// ---- READY TO USE ----
+// TODO Add support for final challenges
 // TODO Add better description
-// TODO Improve readme
-// TODO Add better screenshots
 // TODO Add promotional banners
+// TODO Add better screenshots
+// TODO Improve readme
+// ---- READY TO MARKET ----
+// TODO Update button icon to pull from images
+// TODO Change selection based on errors
+// TODO Add click event to icon
+// TODO Add options
 
 const getProbability = (lesson, index, finalLevelCount) => {
   let studied = lesson.finishedLevels * 6 + lesson.finishedLessons + 1;
@@ -33,23 +36,13 @@ const selectLesson = (lessons) => {
 };
 
 const startLesson = (lessons) => {
-  // chrome.storage.sync.get("boxes", (data) => {
-  //   let boxes = data.boxes;
-  //   if (!boxes || boxes.length !== lessons.length) {
-  //     lessons.forEach((lesson) => {
-  //       boxes.push(getLessonLevel(lesson));
-  //     });
-  //     chrome.storage.sync.set({ boxes });
-  //   }
-  //   console.log(boxes);
-  // });
-
   const lesson = selectLesson(lessons);
   window.location.href = `https://www.duolingo.com/skill/${lesson.learningLanguage}/${lesson.urlName}/practice`;
 };
 
 const getLessons = () => {
   const state = JSON.parse(localStorage.getItem("duo.state"));
+  console.log(state);
   const lessons = [];
   const skills = state.skills;
   Object.keys(skills).forEach((key) => {
@@ -59,7 +52,33 @@ const getLessons = () => {
   return lessons;
 };
 
-const startSr = () => {
-  const lessons = getLessons();
-  startLesson(lessons);
+const getMistakeCount = () => {
+  const state = JSON.parse(localStorage.getItem("duo.state"));
+  return state.user.mistakeCountInfo.mistakeCount;
+};
+
+const start = () => {
+  chrome.storage.sync.set({ running: true });
+};
+
+const stop = () => {
+  chrome.storage.sync.set({ running: false });
+};
+
+const tick = () => {
+  chrome.storage.sync.get("running", (data) => {
+    if (!data.running) return;
+    if (!window.location.href.includes("/learn")) return;
+
+    // Checking if has 10 mistakes
+    const mistakeCount = getMistakeCount();
+    if (mistakeCount >= 10) {
+      window.location.href = "/mistakes-review";
+      return;
+    }
+
+    // Starting generic lesson
+    const lessons = getLessons();
+    startLesson(lessons);
+  });
 };

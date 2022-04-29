@@ -1,6 +1,8 @@
 setInterval(() => init(), 500);
 
-const init = () => {
+setInterval(() => tick(), 500);
+
+const addButton = () => {
   // Add Button
   if (document.getElementById("dsr-button")) return;
   const button = document.createElement("button");
@@ -11,11 +13,24 @@ const init = () => {
   img.style.height = "62%";
   button.appendChild(img);
   button.addEventListener("click", () => {
-    startSr();
+    start();
   });
   var element = document.querySelector("[title='Practice']");
   if (!element) return;
   var parent = element.parentElement;
   parent.style.display = "flex";
   parent.appendChild(button);
+};
+
+const addCloseEvent = () => {
+  const exitButton = document.querySelector("[data-test='quit-button']");
+  if (!exitButton) return false;
+  exitButton.addEventListener("click", () => {
+    stop();
+  });
+};
+
+const init = () => {
+  addButton();
+  addCloseEvent();
 };
