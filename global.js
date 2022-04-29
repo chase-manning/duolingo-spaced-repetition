@@ -3,26 +3,57 @@
 // TODO Change selection based on errors
 // TODO Deploy to Chrome
 
-const startLesson = (lessons, index) => {
-  lessons[index].children[0].click();
-  const startButton = document.querySelector("[data-test='start-button']");
-  startButton.click();
+const getProbability = (lesson, index, finalLevelCount) => {
+  let studied = lesson.finishedLevels * 6 + lesson.finishedLessons + 1;
+  if (lesson.hasFinalLevel) studied += (finalLevelCount - index) * 9;
+  return 1 / Math.pow(studied, 0.8);
+};
+
+const selectLesson = (lessons) => {
+  const finalLevelCount = lessons.filter(
+    (lesson) => lesson.hasFinalLevel
+  ).length;
+  let probabilitySum = 0;
+  lessons.forEach((lesson, index) => {
+    probabilitySum += getProbability(lesson, index, finalLevelCount);
+  });
+  const selection = Math.random() * probabilitySum;
+  let probability = 0;
+  for (let i = 0; i < lessons.length; i++) {
+    const lesson = lessons[i];
+    probability += getProbability(lesson, i, finalLevelCount);
+    if (selection < probability) return lesson;
+  }
+};
+
+const startLesson = (lessons) => {
+  // chrome.storage.sync.get("boxes", (data) => {
+  //   let boxes = data.boxes;
+  //   if (!boxes || boxes.length !== lessons.length) {
+  //     lessons.forEach((lesson) => {
+  //       boxes.push(getLessonLevel(lesson));
+  //     });
+  //     chrome.storage.sync.set({ boxes });
+  //   }
+  //   console.log(boxes);
+  // });
+
+  const lesson = selectLesson(lessons);
+  window.location.href = `https://www.duolingo.com/skill/${lesson.learningLanguage}/${lesson.urlName}/practice`;
 };
 
 const getLessons = () => {
-  const lessons = document.querySelectorAll("[data-test='skill']");
-  const activeLessons = [];
-  lessons.forEach((lesson) => {
-    const text = lesson.children[0].children[0].children[1];
-    const color = window.getComputedStyle(text).getPropertyValue("color");
-    if (color === "rgb(60, 60, 60)") {
-      activeLessons.push(lesson);
-    }
+  const state = JSON.parse(localStorage.getItem("duo.state"));
+  const lessons = [];
+  const skills = state.skills;
+  Object.keys(skills).forEach((key) => {
+    const lesson = skills[key];
+    if (lesson.accessible) lessons.push(lesson);
   });
-  return activeLessons;
+  return lessons;
 };
 
 const startSr = () => {
   const lessons = getLessons();
-  startLesson(lessons, 0);
+  startLesson(lessons);
 };
