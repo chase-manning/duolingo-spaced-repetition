@@ -2,6 +2,8 @@
 // TODO Add support for doing errors
 // TODO Change selection based on errors
 // TODO Deploy to Chrome
+// TODO Add options
+// TODO Add click event to icon
 
 const getProbability = (lesson, index, finalLevelCount) => {
   let studied = lesson.finishedLevels * 6 + lesson.finishedLessons + 1;
