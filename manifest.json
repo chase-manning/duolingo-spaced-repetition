@@ -3,7 +3,7 @@
   "description": "A Chrome Browser Extension to Add Spaced Repetition to Duolingo",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["storage", "activeTab", "scripting"],
+  "permissions": [],
   "action": {
     "default_icon": {
       "16": "/images/logo_16.png",

@@ -4,6 +4,10 @@
 // TODO Deploy to Chrome
 // TODO Add options
 // TODO Add click event to icon
+// TODO Add better description
+// TODO Improve readme
+// TODO Add better screenshots
+// TODO Add promotional banners
 
 const getProbability = (lesson, index, finalLevelCount) => {
   let studied = lesson.finishedLevels * 6 + lesson.finishedLessons + 1;
