@@ -2,11 +2,13 @@
 // TODO Add promotional banners
 // TODO Add better screenshots
 // TODO Improve readme
+// TODO Add link to download to readme
 // ---- READY TO MARKET ----
 // TODO Update button icon to pull from images
 // TODO Change selection based on errors
 // TODO Add click event to icon
 // TODO Add options
+// TODO Add Firefox support
 
 const DELTA = 0.8; // Used to adjust the steepness of the curve (higher = more steep)
 const LEGENDARY_STEP = 9; // Used to adjust the steepness of the decay in legendary probability (higher = less legendaries)
@@ -46,7 +48,13 @@ const selectLesson = (lessons) => {
 
 const startLesson = (lessons) => {
   const lesson = selectLesson(lessons);
-  window.location.href = `https://www.duolingo.com/skill/${lesson.learningLanguage}/${lesson.urlName}/practice`;
+  if (lesson.finishedLevels === 0) {
+    window.location.href = `/skill/${lesson.learningLanguage}/${
+      lesson.urlName
+    }/${lesson.finishedLessons + 1}`;
+  } else {
+    window.location.href = `/skill/${lesson.learningLanguage}/${lesson.urlName}/practice`;
+  }
 };
 
 const getLessons = () => {
